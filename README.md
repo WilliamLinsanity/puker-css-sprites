@@ -14,6 +14,7 @@ Class:
 <li>besides, 
 You should use .card to wrap 2 divs: which should be with class .face and .front.</li>
 At present, all puker cards are 80px*120px
+</ul>
 
 <h5>用法:</h5>
 <ul>
@@ -23,5 +24,6 @@ At present, all puker cards are 80px*120px
 <li>使用.puker-club1, .puker-club2, ..., .puker-club13来表示梅花A-K;</li></li>
 <li>使用.puker-big-kingA, .puker-small-KingA,或 .puker-big-kingB, .puker-small-KingB来表示大小王</li></li>
 <li>使用一个.card类的div包裹一个div，这个子div需要具有.face类和.front类。在子类中设置以上的图案来选择其图案，不设定则为背景图案</li>
-
+</ul>
 目前，所有的扑克牌只有80px*120px大小
+
