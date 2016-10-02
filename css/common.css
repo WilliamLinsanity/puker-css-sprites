@@ -1,0 +1,83 @@
+body{
+    background: #a46740;
+}
+nav{
+    cursor: pointer;
+    padding-left: 40px;
+}
+article{
+    text-align: center;
+}
+#cards-show{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+#cards-show .card{
+    margin: 10px;
+    position: relative;
+}
+#demo02{
+    display: none;
+}
+#game{
+    border-radius: 10px;
+    border: 1px solid #666;
+    background: #232;
+    width: 500px;
+    height: 460px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#cards{
+    position: relative;
+    width: 380px;
+    height: 400px;
+}
+.card{
+    position: absolute;
+    -moz-transition: all .3s;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+}
+.face{
+    position: absolute;
+    -webkit-transition-property: opacity, transform, box-shadow;
+    -webkit-transition-duration: .3s;
+    -webkit-backface-visibility: hidden;
+}
+/*初始时：背面朝上，背面front的z-index值要大于正面back*/
+.front{
+    z-index: 10;
+}
+.back{
+    -webkit-transform: rotate3D(0,1,0,-180deg);
+    z-index: 8;
+}
+.card:hover .face, .card-flipped .face{
+    -webkit-box-shadow: 0 0 10px #aaa;
+}
+/*翻牌效果 翻到正面的牌则应当数字面遮挡背面*/
+.card-flipped .front{
+    -webkit-transform: rotate3D(0,1,0,180deg);
+    z-index: 8;
+}
+.card-flipped .back{
+    -webkit-transform: rotate3D(0,1,0,0deg);
+    z-index: 10;
+}
+.card-removed{
+    opacity: 0;
+}
+
+.github-logo{
+    text-decoration: none;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 100px;
+}
