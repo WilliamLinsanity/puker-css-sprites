@@ -14,7 +14,7 @@ function demo1Init(){
     console.log(deck);
     $('#cards-show').children().each(function(index){
         var pattern = deck.shift();
-        $(this).find('.front').addClass(pattern);
+        $(this).find('.front').addClass(pattern).attr("title",pattern);
         console.log(pattern);
     });
 }
