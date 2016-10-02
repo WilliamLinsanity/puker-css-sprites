@@ -29,3 +29,4 @@ At present, all puker cards are 80px*120px
 </ul>
 目前，所有的扑克牌只有80px*120px大小
 
+<img src="https://raw.githubusercontent.com/xzhyj93/puker-css-sprites/gh-pages/img/demo.png"></img>
