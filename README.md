@@ -1,6 +1,7 @@
 # puker-css-sprites
 <h4>用css sprites实现的整副扑克牌的CSS插件</h4>
 
+<a href=" https://xzhyj93.github.io/puker-css-sprites/">demo： https://xzhyj93.github.io/puker-css-sprites/</a>
 use CSS Sprites to show the whole Puker cards.
 
 <h5>Usage:</h5>
