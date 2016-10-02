@@ -13,8 +13,9 @@ Class:
 <li>.puker-big-kingA, .puker-small-KingA, .puker-big-kingB, .puker-small-KingB, can be used to show the kings pattern;</li></li>
 <li>besides, 
 You should use .card to wrap 2 divs: which should be with class .face and .front.</li>
-At present, all puker cards are 80px*120px
 </ul>
+At present, all puker cards are 80px*120px
+
 
 <h5>用法:</h5>
 <ul>
