@@ -1,4 +1,5 @@
 var cards;
+var matchingGame = {};
 window.onload = function(){
     demo1Init();
     cards = $("#cards>.card:first-child").clone();
@@ -27,7 +28,13 @@ function showDemo1(){
 
 function demo2Init(){
     $('#demo01').hide();
+    $("#popup").addClass("hide");
     $('#demo02').show();
+
+    matchingGame.elapsedTime = 0;
+
+    matchingGame.timer = setInterval(countTimer, 1000);
+
     var deck = [];
     deck = puker.chooseCards(6);
     deck = deck.concat(deck);
@@ -57,7 +64,15 @@ function demo2Init(){
     });    
 }
 
+function countTimer(){
+    matchingGame.elapsedTime++;
+    var minute = Math.floor(matchingGame.elapsedTime / 60);
+    var second = matchingGame.elapsedTime%60;
+    if(minute < 10) minute = "0" + minute;
+    if(second < 10) second = "0" + second;
+    $("#elapsed-time").html(minute+":"+second);
 
+}
 //以下的demo2的逻辑实现
 function selectCard(){
     //如果已经翻开了两张纸牌：
@@ -90,4 +105,34 @@ function isMatchPattern(){
 //已配对纸牌删除
 function removeTookCards(){
     $('.card-removed').remove();
+
+    //检测是否所有纸牌都移除并显示游戏结束画面
+    if($("#cards>.card").length == 0){
+        gameover();
+    }
+}
+
+function gameover(){
+    clearInterval(matchingGame.timer);
+    $(".score").html($("#elapsed-time").html());
+
+    var lastElapsedTime = localStorage.getItem("last-elapsed-time");
+
+    var minute = Math.floor(lastElapsedTime/60);
+    var second = lastElapsedTime%60;
+
+    if(minute < 10) minute = "0" + minute;
+    if(second < 10) second = "0" + second;
+
+    $(".last-score").html(minute + ":" + second);
+    
+
+    $("#popup").removeClass("hide");
+
+    if(lastElapsedTime == 0 || matchingGame.elapsedTime < lastElapsedTime){
+        localStorage.setItem("last-elapsed-time", matchingGame.elapsedTime);
+        $(".ribbon").removeClass("hide");
+    } else {
+        $(".ribbon").addClass("hide");
+    }
 }
