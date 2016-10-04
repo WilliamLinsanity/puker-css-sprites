@@ -12,11 +12,9 @@ function demo1Init(){
     for(var i = 0; i<deck.length; i++){
         $('#cards-show>.card:first-child').clone().appendTo('#cards-show');
     }
-    console.log(deck);
     $('#cards-show').children().each(function(index){
         var pattern = deck.shift();
         $(this).find('.front').addClass(pattern).attr("title",pattern);
-        console.log(pattern);
     });
 }
 
@@ -116,7 +114,7 @@ function gameover(){
     clearInterval(matchingGame.timer);
     $(".score").html($("#elapsed-time").html());
 
-    var lastElapsedTime = parseInt(localStorage.getItem("last-elapsed-time"));
+    var lastElapsedTime = localStorage.getItem("last-elapsed-time");
 
     var minute = Math.floor(lastElapsedTime/60);
     var second = lastElapsedTime%60;
