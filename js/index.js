@@ -116,7 +116,7 @@ function gameover(){
     clearInterval(matchingGame.timer);
     $(".score").html($("#elapsed-time").html());
 
-    var lastElapsedTime = localStorage.getItem("last-elapsed-time");
+    var lastElapsedTime = parseInt(localStorage.getItem("last-elapsed-time"));
 
     var minute = Math.floor(lastElapsedTime/60);
     var second = lastElapsedTime%60;
