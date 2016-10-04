@@ -3,8 +3,10 @@
 <head>
     <meta charset="utf-8">
     <title>CSS Sprites实现扑克牌的插件</title>
+    <link href="https://fonts.googleapis.com/css?family=Dancing+Script" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/common.css">
     <link rel="stylesheet" type="text/css" href="puker-css-sprites/css/puker.css">
+
 </head>
 <body>
     <nav>
@@ -12,6 +14,7 @@
         <span id="show-demo2">纸牌配对游戏</span>
     </nav>
 
+    <!-- page1 效果展示 begin -->
     <article id="demo01">
         <header>
             <h1>效果展示</h1>
@@ -24,16 +27,39 @@
             </div>
         </section>
     </article>
+    <!-- page1 end -->
 
+    <!-- page2 纸牌配对游戏 -->
     <article id="demo02">
         <header>
             <h1>纸牌配对游戏</h1>
         </header>
+        <div id="timer">
+            已用时：<span id="elapsed-time">00:00</span>
+        </div>
         <section id="game">
             <div id="cards">
                 <div class="card">
                     <div class="face front"></div>
                     <div class="face back"></div>
+                </div>
+            </div>
+        </section>
+        <section id="popup" class="hide">
+            <div id="popup-box">
+                <div class="ribbon hide">
+                    <div class="ribbon-body">
+                        <span>New Records</span>
+                    </div>
+                    <div class="triangle"></div>
+                </div>
+                <div id="popup-box-content">
+                    <h1>You Won!</h1>
+                    <p>Your Score:</p>
+                    <p><span class="score">13</span></p>
+                    <p>
+                        <small>Highest Score: <span class="last-score">20</span></small>
+                    </p>
                 </div>
             </div>
         </section>
@@ -44,8 +70,10 @@
         </footer>
         
     </article>
+    <!-- page2 end -->
+
     <footer>
-        <a class="github-logo" href="http://github.com/xzhyj93/puker-css-sprites" ><span>Github:</span><img src="img/github-mark.png" ></a>
+        <a class="github-logo" href="http://github.com/xzhyj93" ><span>Github:</span><img src="img/github-mark.png" ></a>
     </footer>
     
 <script type="text/javascript" src="js/jquery-3.1.0.min.js"></script>
