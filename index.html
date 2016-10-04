@@ -1,83 +1,136 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>CSS Sprites实现扑克牌的插件</title>
-    <link href="https://fonts.googleapis.com/css?family=Dancing+Script" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="css/common.css">
-    <link rel="stylesheet" type="text/css" href="puker-css-sprites/css/puker.css">
+var cards;
+var matchingGame = {};
+window.onload = function(){
+    demo1Init();
+    cards = $("#cards>.card:first-child").clone();
+    $("#show-demo1").click(showDemo1);
+    $('#show-demo2').click(demo2Init);
+};
 
-</head>
-<body>
-    <nav>
-        <span id="show-demo1">效果展示</span>
-        <span id="show-demo2">纸牌配对游戏</span>
-    </nav>
+function demo1Init(){
+    var deck = puker.AllCards.concat(puker.KingsA).concat(puker.KingsB);
+    for(var i = 0; i<deck.length; i++){
+        $('#cards-show>.card:first-child').clone().appendTo('#cards-show');
+    }
+    $('#cards-show').children().each(function(index){
+        var pattern = deck.shift();
+        $(this).find('.front').addClass(pattern).attr("title",pattern);
+    });
+}
 
-    <!-- page1 效果展示 begin -->
-    <article id="demo01">
-        <header>
-            <h1>效果展示</h1>
-        </header>
-        <section id="showPuker">
-            <div id="cards-show">
-                <div class="card">
-                    <div class="face front"></div>
-                </div>
-            </div>
-        </section>
-    </article>
-    <!-- page1 end -->
 
-    <!-- page2 纸牌配对游戏 -->
-    <article id="demo02">
-        <header>
-            <h1>纸牌配对游戏</h1>
-        </header>
-        <div id="timer">
-            已用时：<span id="elapsed-time">00:00</span>
-        </div>
-        <section id="game">
-            <div id="cards">
-                <div class="card">
-                    <div class="face front"></div>
-                    <div class="face back"></div>
-                </div>
-            </div>
-        </section>
-        <section id="popup" class="hide">
-            <div id="popup-box">
-                <div class="ribbon hide">
-                    <div class="ribbon-body">
-                        <span>New Records</span>
-                    </div>
-                    <div class="triangle"></div>
-                </div>
-                <div id="popup-box-content">
-                    <h1>You Won!</h1>
-                    <p>Your Score:</p>
-                    <p><span class="score">13</span></p>
-                    <p>
-                        <small>Highest Score: <span class="last-score">20</span></small>
-                    </p>
-                </div>
-            </div>
-        </section>
-        <footer>
-            <p>这个demo展示了使用CSS Sprites实现的扑克牌的一个应用----扑克牌配对</p>
-            <p>This demo is to show an application of CSS Sprites: Puker Matching Game</p>
-            
-        </footer>
-        
-    </article>
-    <!-- page2 end -->
+function showDemo1(){
+   $('#demo02').hide();
+   $('#demo01').show();
+}
 
-    <footer>
-        <a class="github-logo" href="http://github.com/xzhyj93" ><span>Github:</span><img src="img/github-mark.png" ></a>
-    </footer>
+function demo2Init(){
+    $('#demo01').hide();
+    $("#popup").addClass("hide");
+    $('#demo02').show();
+
+    matchingGame.elapsedTime = 0;
+
+    matchingGame.timer = setInterval(countTimer, 1000);
+
+    var deck = [];
+    deck = puker.chooseCards(6);
+    deck = deck.concat(deck);
+    //洗牌： 把12张扑克牌随机打乱顺序
+    puker.shuffle(deck);
     
-<script type="text/javascript" src="js/jquery-3.1.0.min.js"></script>
-<script type="text/javascript" src="puker-css-sprites/js/puker.js"></script>
-<script type="text/javascript" src="js/index.js"></script>
-</body>
-</html>
+    $('#cards').empty();
+    //复制12张牌
+    for(var i=0; i<=11; i++){
+        cards.clone().appendTo("#cards");
+    }
+    //初始化每张牌的位置
+    $('#cards').children().each(function(index){
+        //让纸牌以4*3的形式对齐
+        $(this).css({
+            "left": ($(this).width() + 20) * (index % 4),
+            "top": ($(this).height() + 20) * Math.floor(index / 4),
+        });
+        //从已经洗过的纸牌中获取图案
+        var pattern = deck.pop();
+        //应用纸牌的背面图案，并让其可见
+        $(this).find(".back").addClass(pattern);
+        //把图案数据嵌入DOM元素中
+        $(this).attr("data-pattern", pattern);
+        //监听每张纸牌DIV元素的单击事件
+        $(this).click(selectCard);
+    });    
+}
+
+function countTimer(){
+    matchingGame.elapsedTime++;
+    var minute = Math.floor(matchingGame.elapsedTime / 60);
+    var second = matchingGame.elapsedTime%60;
+    if(minute < 10) minute = "0" + minute;
+    if(second < 10) second = "0" + second;
+    $("#elapsed-time").html(minute+":"+second);
+
+}
+//以下的demo2的逻辑实现
+function selectCard(){
+    //如果已经翻开了两张纸牌：
+    if($('.card-flipped').length > 1){
+        return;
+    }
+    $(this).addClass("card-flipped");
+    //0.7秒后，检测两张已翻开的牌的图案
+    if($(".card-flipped").length == 2){
+        setTimeout(checkPattern, 700);
+    }
+}
+
+function checkPattern(){
+    if(isMatchPattern()){
+        $('.card-flipped').removeClass('card-flipped').addClass('card-removed');
+        $('.card-removed').bind("webkitTransitionEnd", removeTookCards);
+    } else {
+        $('.card-flipped').removeClass('card-flipped');
+    }
+}
+
+function isMatchPattern(){
+    var cards = $('.card-flipped');
+    var pattern = $(cards[0]).data('pattern');
+    var anotherPattern = $(cards[1]).data('pattern');
+    return (pattern == anotherPattern);
+}
+
+//已配对纸牌删除
+function removeTookCards(){
+    $('.card-removed').remove();
+
+    //检测是否所有纸牌都移除并显示游戏结束画面
+    if($("#cards>.card").length == 0){
+        gameover();
+    }
+}
+
+function gameover(){
+    clearInterval(matchingGame.timer);
+    $(".score").html($("#elapsed-time").html());
+
+    var lastElapsedTime = parseInt(localStorage.getItem("last-elapsed-time"));
+
+    var minute = Math.floor(lastElapsedTime/60);
+    var second = lastElapsedTime%60;
+
+    if(minute < 10) minute = "0" + minute;
+    if(second < 10) second = "0" + second;
+
+    $(".last-score").html(minute + ":" + second);
+    
+
+    $("#popup").removeClass("hide");
+
+    if(lastElapsedTime == 0 || matchingGame.elapsedTime < lastElapsedTime){
+        localStorage.setItem("last-elapsed-time", matchingGame.elapsedTime);
+        $(".ribbon").removeClass("hide");
+    } else {
+        $(".ribbon").addClass("hide");
+    }
+}
